@@ -12,4 +12,9 @@ export default defineConfig({
       "/services": path.resolve(__dirname, "./services"),
     },
   },
+  server: {
+    fs: {
+      cachedChecks: false,
+    },
+  },
 });

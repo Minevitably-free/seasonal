@@ -11,19 +11,25 @@
     "navigationBarTitleText": "消时令",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
-  }, // Fix: Add missing comma
+  },
   "pages": [
     {
-      "path": "pages/index/index",
-      "style": {
-        "navigationStyle": "custom"
-      }
+      "path": "pages/load/load"
     },
     {
-      "path": "pages/game/game",
-      "style": {
-        "navigationBarTitleText": "消时令"
-      }
+      "path": "pages/index/index"
+    },
+    {
+      "path": "pages/game/game"
+    },
+    {
+      "path": "pages/game/obtain"
+    },
+    {
+      "path": "pages/game/fail"
+    },
+    {
+      "path": "pages/game/success"
     },
     {
       "path": "pages/index/components/SeasonalPage",
@@ -48,19 +54,6 @@
       "style": {
         "navigationBarTitleText": "阅读页面"
       }
-    },
-    {
-      "path": "pages/load/load.vue",
-      "style": {
-        "navigationBarTitleText": "load"
-      }
-    },
-    {
-    	"path" : "pages/load/load",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : ""
-    	}
     }
   ]
 }

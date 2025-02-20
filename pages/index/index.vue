@@ -78,7 +78,13 @@ export default {
 		}
 	},
 	onLoad() {
-		// Get safe area top from global state
+		// Check if resources are loaded
+		if (!uni.$globalData.resourcesLoaded) {
+			uni.redirectTo({
+				url: '/pages/load/load'
+			});
+			return;
+		}
 		this.safeAreaTop = uni.$globalData.safeAreaTop;
 	},
 	methods: {
