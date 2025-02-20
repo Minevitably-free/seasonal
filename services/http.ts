@@ -1,6 +1,7 @@
 import axios from "axios";
 import mpAdapter from "axios-miniprogram-adapter";
 import { useUserStore } from "/store/user";
+import { useGameStore } from "@/store/game";
 axios.defaults.adapter = mpAdapter;
 const service = axios.create({
   baseURL: "http://dev-sds.plotmax.opencs.site/",
@@ -52,6 +53,16 @@ service.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Error handling wrapper
+const handleApiError = (error: any, defaultValue: any) => {
+  console.error("API Error:", error);
+  uni.showToast({
+    title: error?.message || "请求失败",
+    icon: "none",
+  });
+  return defaultValue;
+};
 
 export const getUserInfo = () => {
   const userStore = useUserStore();
@@ -124,22 +135,20 @@ export const inviteFriend = async () => {
 };
 // Bot play related APIs
 export const getBotPlayInfo = async () => {
-  const userStore = useUserStore();
+  const gameStore = useGameStore();
   try {
     const response = await service.post("/api/game/getBotPlayInfo", {
-      userId: userStore.userId,
+      userId: useUserStore().userId,
     });
+    if (response.status === "success") {
+      gameStore.setBotPlayInfo(response.data);
+    }
     return response;
   } catch (error) {
-    console.error("Error fetching bot play info:", error);
-    return {
+    return handleApiError(error, {
       status: "error",
-      message: "获取今日人机对战信息失败",
-      data: {
-        winTimes: 0,
-        loseTimes: 0,
-      },
-    };
+      data: { winTimes: 0, loseTimes: 0 },
+    });
   }
 };
 
@@ -181,6 +190,115 @@ export const getGameRecords = async () => {
       },
     };
   }
+};
+
+// Solar Terms APIs
+export const getAllSolarTerms = async (userId: string) => {
+  const gameStore = useGameStore();
+  try {
+    const response = await service.post("/api/solarTerms/getAllSolarTerms", {
+      userId,
+    });
+    if (response.status === "success") {
+      gameStore.setSolarTerms(response.data.allSolarTerms);
+    }
+    return response;
+  } catch (error) {
+    return handleApiError(error, {
+      status: "error",
+      data: { allSolarTerms: [] },
+    });
+  }
+};
+
+export const getSolarTermDetail = (id: number) => {
+  return service.post("/api/solarTerms/getDetail", { id });
+};
+
+export const getCollectedSolarTerms = (userId: string) => {
+  return service.post("/api/users/getCollectedSolarTerms", { userId });
+};
+
+// Game Operation APIs
+export const startGame = (userId: string, botPlay: boolean, theme?: string) => {
+  return service.post("/api/game/play", { userId, botPlay, theme });
+};
+
+export const createGameRecord = (
+  userId: string,
+  duration: number,
+  theme: string
+) => {
+  return service.post("/api/game/createRecord", { userId, duration, theme });
+};
+
+export const getPlayTimes = async (userId: string) => {
+  const gameStore = useGameStore();
+  try {
+    const response = await service.post("/api/game/getPlayTimes", { userId });
+    if (response.status === "success") {
+      gameStore.setPlayTimes(response.data.todayPlayTimes);
+    }
+    return response;
+  } catch (error) {
+    return handleApiError(error, {
+      status: "error",
+      data: { todayPlayTimes: gameStore.playTimes },
+    });
+  }
+};
+
+export const getRebornQuestion = () => {
+  return service.post("/api/game/reborn");
+};
+
+// Items Management APIs
+export const getItemInfo = async (userId: string) => {
+  const gameStore = useGameStore();
+  try {
+    const response = await service.post("/api/game/getItemInfo", { userId });
+    if (response.status === "success") {
+      gameStore.setItemInfo(response.data);
+    }
+    return response;
+  } catch (error) {
+    return handleApiError(error, {
+      status: "error",
+      data: { seasonExchangeItems: 0, groupExchangeItems: 0 },
+    });
+  }
+};
+
+export const useItem = async (
+  userId: string,
+  itemType: "seasonExchange" | "groupExchange"
+) => {
+  const gameStore = useGameStore();
+  try {
+    const response = await service.post("/api/game/useItem", {
+      userId,
+      itemType,
+    });
+    if (response.status === "success") {
+      gameStore.setItemInfo(response.data);
+    }
+    return response;
+  } catch (error) {
+    return handleApiError(error, {
+      status: "error",
+      data: {
+        seasonExchangeItems: gameStore.itemInfo.seasonExchangeItems,
+        groupExchangeItems: gameStore.itemInfo.groupExchangeItems,
+      },
+    });
+  }
+};
+
+export const acquireItem = (
+  userId: string,
+  itemType: "seasonExchange" | "groupExchange"
+) => {
+  return service.post("/api/game/acquireItem", { userId, itemType });
 };
 
 export default service;

@@ -16,16 +16,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SeasonalKnowledgeItem from './SeasonalKnowledgeItem.vue';
-import { getSolarTerms } from '@/services/http';
-import service from '@/services/http';
-
-interface SolarTerm {
-  id: number;
-  term: string;
-  image: string;
-  content: string;
-  hasRead: boolean;
-}
+import { getAllSolarTerms } from '@/services/http';
+import { useUserStore } from '@/store/user';
+import { useGameStore } from '@/store/game';
 
 export default defineComponent({
   components: {
@@ -33,7 +26,6 @@ export default defineComponent({
   },
   data() {
     return {
-      solarTerms: [] as SolarTerm[],
       readCount: 0,
       safeAreaTop: 0
     };
@@ -43,43 +35,26 @@ export default defineComponent({
       return {
         paddingTop: this.safeAreaTop + 'px'
       };
+    },
+    solarTerms() {
+      return useGameStore().solarTerms;
     }
   },
   methods: {
     async fetchSolarTerms() {
-      try {
-        const response = await service.post('/api/solarTerms/getAllSolarTerms', { userId: '1' });
-        if (response.status === 'success') {
-          this.solarTerms = response.data.allSolarTerms;
-          this.readCount = this.solarTerms.filter(term => term.hasRead).length;
-        } else {
-          console.error(response.message);
-        }
-      } catch (error) {
-        console.error('Error fetching solar terms:', error);
-      }
+      const userStore = useUserStore();
+      await getAllSolarTerms(userStore.userId);
+      this.readCount = this.solarTerms.filter(term => term.hasRead).length;
     },
     navigateBack() {
       uni.navigateBack();
     },
-    navigateToReadPage(item: SolarTerm, index: number) {
-      if (item.hasRead) {
-        this.doNavigateToReadPage(item, index);
-      }
-      else {
-        this.doNavigateToReadPage(item, index);
-        if (item.hasRead) {
-          this.readCount++;
-        }
-      }
-    },
-    doNavigateToReadPage(item: SolarTerm, index: number) {
+    navigateToReadPage(item: any, index: number) {
       uni.navigateTo({
         url: `/pages/index/components/SeasonalReadPage?term=${item.term}&content=${item.content}&index=${index + 1}&total=${this.solarTerms.length}&readCount=${this.readCount}`
       });
-    },
+    }
   },
-
   mounted() {
     this.fetchSolarTerms();
   },

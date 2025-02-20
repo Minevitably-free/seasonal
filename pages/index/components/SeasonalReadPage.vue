@@ -6,7 +6,7 @@
             @tap="navigateBack" />
         <view class="cf-flex-col cf-justify-start cf-items-center section_2 pos_3">
             <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper"><text class="font text">{{ readCount
-            }}</text>
+                    }}</text>
             </view>
         </view>
         <view class="cf-flex-col cf-justify-start cf-items-center section_3 pos_4">
@@ -15,7 +15,7 @@
             </view>
         </view>
         <view class="cf-flex-col cf-justify-start cf-items-center section_4 pos_5"><text class="text_3">{{ term
-        }}</text></view>
+                }}</text></view>
         <text class="font_2 pos_6">{{ content }}</text>
     </view>
 </template>
@@ -23,8 +23,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { request } from '@/services/http';
-import service from '@/services/http';
+import { getSolarTermDetail } from '@/services/http';
+import { useUserStore } from '@/store/user';
 
 export default defineComponent({
     data() {
@@ -50,12 +50,9 @@ export default defineComponent({
         },
         async markAsRead() {
             try {
-                const response = await service.post('/api/solarTerms/updateArticleReadCount', { userId: '1', termId: this.term });
-                if (response.status === 'success') {
-                    this.readCount++;
-                } else {
-                    console.error(response.message);
-                }
+                const userStore = useUserStore();
+                await getSolarTermDetail(parseInt(this.term));
+                this.readCount++;
             } catch (error) {
                 console.error('Error marking term as read:', error);
             }

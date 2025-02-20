@@ -1,10 +1,11 @@
 <template>
-    <view class="cf-flex-row cf-items-center pos_24" style="margin: 8rpx ;">
+    <view class="cf-flex-row cf-items-center pos_24" style="margin: 8rpx;">
         <view class="cf-flex-col cf-justify-start cf-items-center cf-shrink-0 image-wrapper_6">
             <image class="image_13" :src="image" />
         </view>
-        <view class="cf-flex-col cf-justify-center cf-items-start cf-shrink-0 text-wrapper ml-21">
-            <text class="cf-relative font">{{ term }}的知识</text>
+        <view class="cf-flex-col cf-justify-center cf-items-start cf-shrink-0 text-wrapper ml-21"
+            :style="{ backgroundColor: hasRead ? '#ffffff' : '#0' }">
+            <text class="cf-relative font" ">{{ term }}的知识</text>
         </view>
     </view>
 </template>
@@ -27,7 +28,6 @@ export default {
 
 .image-wrapper_6 {
     padding: 26.29rpx 0 29.79rpx;
-background-color: #ffffff;
     background-color: #ffffff;
     border-radius: 50%;
     width: 120.91rpx;
@@ -46,6 +46,7 @@ background-color: #ffffff;
     width: calc(100% - 170rpx);
     height: 92.87rpx;
     border: solid 5.26rpx #dae36a;
+    transition: background-color 0.3s;
 }
 
 .font {
