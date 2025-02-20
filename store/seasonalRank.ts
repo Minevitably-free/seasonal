@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { getGameRecords } from "/services/http";
+import { getGameRecords } from "@/services/http";
 
 export const useSeasonalRankStore = defineStore("seasonalRank", () => {
   const rankData = ref({

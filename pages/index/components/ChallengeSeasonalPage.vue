@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { getBotPlayInfo } from '/services/http';
+import { getBotPlayInfo } from '@/services/http';
 
 export default {
   components: {},

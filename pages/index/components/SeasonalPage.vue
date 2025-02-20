@@ -16,7 +16,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SeasonalKnowledgeItem from './SeasonalKnowledgeItem.vue';
-import service from '/services/http';
+import { getSolarTerms } from '@/services/http';
+import service from '@/services/http';
 
 interface SolarTerm {
   id: number;

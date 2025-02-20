@@ -23,7 +23,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import service from '/services/http';
+import { request } from '@/services/http';
+import service from '@/services/http';
 
 export default defineComponent({
     data() {
@@ -129,8 +130,7 @@ export default defineComponent({
 }
 
 .section_3 {
-    padding: 10.51rpx 0 1287.97rbackground-color: #ffffffb3;
-    px;
+    padding: 10.51rpx 0 1287.97rpx;
     background-color: #ffffffb3;
     border-radius: 87.62rpx;
     width: 145.44rpx;

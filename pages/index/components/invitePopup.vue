@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { getShareInfo, inviteFriend } from '/services/http';
+import { getShareInfo, inviteFriend } from '@/services/http';
 
 export default {
   data() {
