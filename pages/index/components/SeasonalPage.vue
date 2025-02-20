@@ -87,7 +87,7 @@ export default defineComponent({
 
 .knowledge_container {
   position: absolute;
-  top: 150rpx;
+  top: 130rpx;
   /* 预留顶部空间 */
   left: 20rpx;
   right: 20rpx;

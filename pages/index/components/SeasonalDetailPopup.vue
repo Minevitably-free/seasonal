@@ -10,7 +10,7 @@
                     <text class="font">{{ termData.content }}</text>
                 </view>
             </view>
-            <image class="image_3 pos" @click="$emit('close')"
+            <image class="image_3 pos" @tap="$emit('close')"
                 src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/a01e03256b7f5206e73759f9b12e139c.png" />
         </view>
     </view>

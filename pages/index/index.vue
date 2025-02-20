@@ -18,12 +18,12 @@
 			</view>
 		</view>
 		<uni-popup ref="rankingPopup" type="center">
-			<RankingPopup />
+			<RankingPopup @close="closeRankingPopup"/>
 		</uni-popup>
 		<uni-popup ref="mySeasonalPopup" type="center" :mask-click="false">
 			<MySeasonalPopup @close="closeMySeasonalPopup" />
 		</uni-popup>
-		<uni-popup ref="invitePopup" type="center">
+		<uni-popup ref="invitePopup" type="center" @close="closeinvitePopup">
 			<invitePopup />
 		</uni-popup>
 	</view>
