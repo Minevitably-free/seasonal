@@ -78,7 +78,7 @@ export default defineComponent({
 .image {
   position: absolute;
   /* 改为absolute定位 */
-  left: 50rpx;
+  left: 52.57rpx;
   width: 43.81rpx;
   height: 35.05rpx;
   z-index: 1;

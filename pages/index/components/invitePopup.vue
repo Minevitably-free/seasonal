@@ -39,7 +39,8 @@
       <text class="text">加入时令</text>
     </view>
     <image class="image_3 pos_4"
-      src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/78f018a9aecb525ff91c61f7f8ca080c.png" />
+      src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/78f018a9aecb525ff91c61f7f8ca080c.png"
+      @tap="close" />
   </view>
 </template>
 
@@ -57,6 +58,11 @@ export default {
     const response = await getShareInfo();
     if (response.status === 'success') {
       this.sharedCount = response.data.sharedCount;
+    }
+  },
+  methods: {
+    close() {
+      this.$emit('close');
     }
   },
 

@@ -89,7 +89,6 @@ export default defineComponent({
 .pos_2 {
     position: absolute;
     left: 52.57rpx;
-    top: 75.35rpx;
 }
 
 .section_2 {

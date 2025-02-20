@@ -23,8 +23,8 @@
 		<uni-popup ref="mySeasonalPopup" type="center" :mask-click="false">
 			<MySeasonalPopup @close="closeMySeasonalPopup" />
 		</uni-popup>
-		<uni-popup ref="invitePopup" type="center" @close="closeinvitePopup">
-			<invitePopup />
+		<uni-popup ref="invitePopup" type="center">
+			<invitePopup  @close="closeinvitePopup"/>
 		</uni-popup>
 	</view>
 </template>
@@ -113,9 +113,6 @@ export default {
 		closeinvitePopup() {
 			this.$refs.invitePopup.close();
 		},
-		calcPageHeight() {
-
-		}
 	},
 };
 </script>
