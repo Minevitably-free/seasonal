@@ -2,7 +2,7 @@
   <view class="page" :style="pageStyle">
     <image class="image"
       src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/e11edf570e79834f348a31a56da4999a.png"
-      @tap="navigateToHome" />
+      @tap="navigateBack" />
     <scroll-view class="knowledge_container" scroll-y>
       <view v-for="(item, index) in solarTerms" :key="index">
         <SeasonalKnowledgeItem :image="item.image" :term="item.term" :content="item.content" :index="index"
@@ -59,10 +59,8 @@ export default defineComponent({
         console.error('Error fetching solar terms:', error);
       }
     },
-    navigateToHome() {
-      uni.navigateTo({
-        url: '/pages/index/index'
-      });
+    navigateBack() {
+      uni.navigateBack();
     },
     navigateToReadPage(item: SolarTerm, index: number) {
       if (item.hasRead) {
