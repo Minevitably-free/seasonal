@@ -14,10 +14,10 @@
         </scroll-view>
       </view>
       <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper pos_3">
+        <image class="image_3 pos_2" @click="close"
+          src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/a01e03256b7f5206e73759f9b12e139c.png" />
         <text class="text">我的时令</text>
       </view>
-      <image class="image_3 pos_2" @click="close"
-        src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/a01e03256b7f5206e73759f9b12e139c.png" />
     </view>
     <SeasonalDetailPopup v-if="showDetail" :termData="selectedTerm" @close="showDetail = false" />
   </view>
@@ -168,8 +168,8 @@ export default {
 
 .pos_2 {
   position: absolute;
-  right: 68.34rpx;
-  top: 0;
+  right: -30rpx;
+  top: -10rpx;
 }
 
 .uncollected {

@@ -14,7 +14,10 @@
   },
   "pages": [
     {
-      "path": "pages/load/load"
+      "path": "pages/load/load",
+      "style": {
+        "navigationStyle": "custom"
+      }
     },
     {
       "path": "pages/index/index"

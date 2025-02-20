@@ -9,6 +9,11 @@ export default {
         uni.$globalData.safeAreaTop = res.safeAreaInsets?.top || 0;
       }
     });
+    // 初始化全局数据
+    uni.$globalData = {
+      resourcesLoaded: false,
+      safeAreaTop: 0
+    };
   },
   onShow: function () {
     console.log('App Show');
@@ -549,5 +554,9 @@ text {
 
 .cf-mt-100 {
   margin-top: 175.23rpx;
+}
+
+page {
+  height: 100vh;
 }
 </style>

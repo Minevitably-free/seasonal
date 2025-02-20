@@ -60,8 +60,12 @@ export default class ResourceLoader {
 
   static async loadResource(url) {
     return new Promise((resolve, reject) => {
-      const isImage = url.match(/\.(jpg|jpeg|png|gif)$/i);
-      const isAudio = url.match(/\.(mp3|wav|ogg)$/i);
+      if (typeof url !== "string") {
+        return reject(new Error("Invalid URL: must be a string"));
+      }
+
+      const isImage = /\.(jpg|jpeg|png|gif)$/i.test(url);
+      const isAudio = /\.(mp3|wav|ogg)$/i.test(url);
 
       if (isImage) {
         const img = new Image();
@@ -86,11 +90,23 @@ export default class ResourceLoader {
   }
 
   static async loadAll(progressCallback) {
-    const allResources = [
-      ...Object.values(this.resources.images).flat(2),
-      ...Object.values(this.resources.audio).flat(),
-    ];
+    // 递归展平对象到URL数组
+    const flattenResources = (obj) => {
+      return Object.values(obj).reduce((acc, val) => {
+        if (typeof val === "string") {
+          return [...acc, val];
+        }
+        if (Array.isArray(val)) {
+          return [...acc, ...val];
+        }
+        if (typeof val === "object" && val !== null) {
+          return [...acc, ...flattenResources(val)];
+        }
+        return acc;
+      }, []);
+    };
 
+    const allResources = flattenResources(this.resources);
     const total = allResources.length;
     let loaded = 0;
 

@@ -20,7 +20,7 @@
 		<uni-popup ref="rankingPopup" type="center">
 			<RankingPopup />
 		</uni-popup>
-		<uni-popup ref="mySeasonalPopup" type="center">
+		<uni-popup ref="mySeasonalPopup" type="center" :mask-click="false">
 			<MySeasonalPopup @close="closeMySeasonalPopup" />
 		</uni-popup>
 		<uni-popup ref="invitePopup" type="center">
