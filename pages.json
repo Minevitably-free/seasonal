@@ -11,7 +11,7 @@
     "navigationBarTitleText": "消时令",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
-  },  // Fix: Add missing comma
+  }, // Fix: Add missing comma
   "pages": [
     {
       "path": "pages/index/index",
@@ -48,6 +48,19 @@
       "style": {
         "navigationBarTitleText": "阅读页面"
       }
+    },
+    {
+      "path": "pages/load/load.vue",
+      "style": {
+        "navigationBarTitleText": "load"
+      }
+    },
+    {
+    	"path" : "pages/load/load",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : ""
+    	}
     }
   ]
 }

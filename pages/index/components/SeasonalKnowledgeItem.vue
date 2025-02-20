@@ -4,8 +4,8 @@
             <image class="image_13" :src="image" />
         </view>
         <view class="cf-flex-col cf-justify-center cf-items-start cf-shrink-0 text-wrapper ml-21"
-            :style="{ backgroundColor: hasRead ? '#ffffff' : '#0' }">
-            <text class="cf-relative font" ">{{ term }}的知识</text>
+            :style="{ backgroundColor: hasRead ? '#ffffff' : 'transparent' }">
+            <text class="cf-relative font" >{{ term }}的知识</text>
         </view>
     </view>
 </template>

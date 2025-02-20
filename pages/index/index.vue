@@ -21,7 +21,7 @@
 			<RankingPopup />
 		</uni-popup>
 		<uni-popup ref="mySeasonalPopup" type="center">
-			<MySeasonalPopup />
+			<MySeasonalPopup @close="closeMySeasonalPopup" />
 		</uni-popup>
 		<uni-popup ref="invitePopup" type="center">
 			<invitePopup />

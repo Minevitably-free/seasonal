@@ -211,12 +211,45 @@ export const getAllSolarTerms = async (userId: string) => {
   }
 };
 
-export const getSolarTermDetail = (id: number) => {
-  return service.post("/api/solarTerms/getDetail", { id });
+export const getSolarTermDetail = async (id: number) => {
+  try {
+    const response = await service.post("/api/solarTerms/getDetail", { id });
+    return response;
+  } catch (error) {
+    return handleApiError(error, {
+      status: "error",
+      data: {
+        image: "",
+        term: "",
+        id: null,
+        content: "",
+      },
+    });
+  }
 };
 
-export const getCollectedSolarTerms = (userId: string) => {
-  return service.post("/api/users/getCollectedSolarTerms", { userId });
+export const getCollectedSolarTerms = async (userId: string) => {
+  try {
+    const response = await service.post("/api/users/getCollectedSolarTerms", {
+      userId,
+    });
+    if (response.status === "success") {
+      return response;
+    }
+    return {
+      status: "error",
+      data: {
+        allSolarTerms: [],
+      },
+    };
+  } catch (error) {
+    return handleApiError(error, {
+      status: "error",
+      data: {
+        allSolarTerms: [],
+      },
+    });
+  }
 };
 
 // Game Operation APIs
