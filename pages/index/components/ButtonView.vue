@@ -47,7 +47,7 @@ export default {
     border-radius: 53rpx;
     box-shadow: 0rpx 17.52rpx 17.52rpx #00000029 inset;
     border: solid 17.52rpx #ffffff;
-    width: 100%;
+    width: 200rpx;
     box-sizing: border-box;
     display: flex;
     justify-content: center;

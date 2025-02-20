@@ -3,9 +3,9 @@
     <image class="image_3"
       src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/icon/others/shortest_completion_time.png">
     </image>
-    <text class="font text text_1">通关最短用时</text>
-    <text class="text text_2" :style="{ fontSize: timeFontSize }">{{ formattedBestTime }}</text>
-    <text class="font text text_7">加油</text>
+    <text class="font text ">通关最短用时</text>
+    <text class="text text_1" :style="{ fontSize: timeFontSize }">{{ formattedBestTime }}</text>
+    <text class="font text text_2">加油</text>
   </view>
 </template>
 <script>
@@ -66,23 +66,19 @@ export default {
 
 .text {
   -webkit-text-stroke: 1.75rpx #ffffff;
+  margin-top: 29.72rpx;
+  font-weight: 600;
 }
+
 
 .text_1 {
-  margin-top: 29.72rpx;
-}
-
-.text_2 {
-  width: 462.62rpx;
   margin-top: 16.86rpx;
   color: #0e932e;
   font-size: 70rpx;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.text_7 {
+.text_2 {
   margin-top: 22.64rpx;
 }
 </style>
