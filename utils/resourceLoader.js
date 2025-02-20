@@ -58,6 +58,11 @@ export default class ResourceLoader {
     },
   };
 
+  static loadPageResources = [
+    "https://minio.plotmax.opencs.site/seasonal-delights/assets/images/background/index_background.jpg",
+    "https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/ce77ccbd29e8d87c8e1bce83ee055672.png",
+  ];
+
   static async loadResource(url) {
     return new Promise((resolve, reject) => {
       if (typeof url !== "string") {
@@ -89,35 +94,63 @@ export default class ResourceLoader {
     });
   }
 
+  static async loadWithMinDuration(promises, minDuration, progressCallback) {
+    const startTime = Date.now();
+    let loaded = 0;
+    const total = promises.length;
+
+    const results = await Promise.all(
+      promises.map((promise) =>
+        promise.then((result) => {
+          loaded++;
+          progressCallback(Math.floor((loaded / total) * 100));
+          return result;
+        })
+      )
+    );
+
+    const elapsed = Date.now() - startTime;
+    if (elapsed < minDuration) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, minDuration - elapsed)
+      );
+    }
+
+    return results;
+  }
+
   static async loadAll(progressCallback) {
-    // 递归展平对象到URL数组
     const flattenResources = (obj) => {
       return Object.values(obj).reduce((acc, val) => {
-        if (typeof val === "string") {
-          return [...acc, val];
-        }
-        if (Array.isArray(val)) {
-          return [...acc, ...val];
-        }
-        if (typeof val === "object" && val !== null) {
+        if (typeof val === "string") return [...acc, val];
+        if (Array.isArray(val)) return [...acc, ...val];
+        if (typeof val === "object" && val !== null)
           return [...acc, ...flattenResources(val)];
-        }
         return acc;
       }, []);
     };
 
-    const allResources = flattenResources(this.resources);
-    const total = allResources.length;
-    let loaded = 0;
+    // First load essential resources
+    const loadPagePromises = this.loadPageResources.map((url) =>
+      this.loadResource(url)
+    );
+    await this.loadWithMinDuration(loadPagePromises, 1000, (progress) => {
+      progressCallback(Math.floor(progress * 0.3)); // First 30% for load page resources
+    });
 
-    const promises = allResources.map((url) =>
-      this.loadResource(url).then(() => {
-        loaded++;
-        progressCallback(Math.floor((loaded / total) * 100));
-        return url;
-      })
+    // Then load remaining resources
+    const allResources = flattenResources(this.resources);
+    const remainingResources = allResources.filter(
+      (url) => !this.loadPageResources.includes(url)
+    );
+    const remainingPromises = remainingResources.map((url) =>
+      this.loadResource(url)
     );
 
-    return Promise.all(promises);
+    await this.loadWithMinDuration(remainingPromises, 2000, (progress) => {
+      progressCallback(Math.floor(30 + progress * 0.7)); // Remaining 70% for other resources
+    });
+
+    return allResources;
   }
 }

@@ -6,7 +6,7 @@
     <view class="progress-container">
       <view class="progress-bar" :style="{ width: progress + '%' }"></view>
     </view>
-    <text class="loading-text">{{ progress }}%加载中</text>
+    <text class="loading-text">{{ Math.floor(progress) }}%加载中</text>
     <text class="notice-text">
       抵制不良游戏，拒绝盗版游戏。<br />
       注意自我保护，谨防受骗上当。<br />
@@ -22,7 +22,8 @@ import ResourceLoader from '../../utils/resourceLoader';
 export default {
   data() {
     return {
-      progress: 0
+      progress: 0,
+      loadingStartTime: 0
     };
   },
   onLoad() {
@@ -34,6 +35,7 @@ export default {
     const systemInfo = uni.getSystemInfoSync();
     uni.$globalData.safeAreaTop = systemInfo.safeAreaInsets?.top || 0;
 
+    this.loadingStartTime = Date.now();
     this.startLoading();
   },
   methods: {
@@ -45,6 +47,12 @@ export default {
 
         // Store loaded resources in global state
         uni.$globalData.resourcesLoaded = true;
+
+        // Ensure minimum 3 seconds loading time
+        const elapsed = Date.now() - this.loadingStartTime;
+        if (elapsed < 3000) {
+          await new Promise(resolve => setTimeout(resolve, 3000 - elapsed));
+        }
 
         // Navigate to index page
         uni.redirectTo({
