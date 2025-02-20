@@ -4,7 +4,7 @@
       src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/e11edf570e79834f348a31a56da4999a.png"
       @tap="navigateToHome" />
     <scroll-view class="knowledge_container" scroll-y>
-      <view v-for="(item, index) in solarTerms" :key="index" >
+      <view v-for="(item, index) in solarTerms" :key="index">
         <SeasonalKnowledgeItem :image="item.image" :term="item.term" :content="item.content" :index="index"
           :totalItems="solarTerms.length" :readCount="readCount" :hasRead="item.hasRead"
           @tap="navigateToReadPage(item, index)" />
@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SeasonalKnowledgeItem from './SeasonalKnowledgeItem.vue';
-import service from '@/services/http';
+import service from '/services/http';
 
 interface SolarTerm {
   id: number;
@@ -122,5 +122,4 @@ export default defineComponent({
   /* 减去顶部预留的空间 */
   overflow-y: auto;
 }
-
 </style>

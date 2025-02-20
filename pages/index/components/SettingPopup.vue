@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { getUserInfo, getUserSettings, getPost, updateUserSettings } from "@/services/http";
+import { getUserInfo, getUserSettings, getPost, updateUserSettings } from "/services/http";
 
 export default {
   components: {},

@@ -1,6 +1,6 @@
 import axios from "axios";
 import mpAdapter from "axios-miniprogram-adapter";
-import { useUserStore } from "@/store/user";
+import { useUserStore } from "/store/user";
 axios.defaults.adapter = mpAdapter;
 const service = axios.create({
   baseURL: "http://dev-sds.plotmax.opencs.site/",

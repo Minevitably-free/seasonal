@@ -1,6 +1,6 @@
 <script setup>
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { useUserStore } from "@/store/user";
+import { useUserStore } from "/store/user";
 
 // Initialize global state
 const globalData = {

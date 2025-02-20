@@ -9,7 +9,7 @@
   </view>
 </template>
 <script>
-import { useSeasonalRankStore } from '@/store/seasonalRank';
+import { useSeasonalRankStore } from '/store/seasonalRank';
 
 export default {
   name: "BestTime",
