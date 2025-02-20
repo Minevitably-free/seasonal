@@ -1,0 +1,265 @@
+view {
+  box-sizing: border-box;
+}
+
+.back {
+  background-image: url("https://minio.plotmax.opencs.site/seasonal-delights/assets/images/background/game_background.jpg");
+  background-size: cover;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
+}
+
+/* 第一排：控制按钮 */
+.control-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.control-btn {
+  width: 80rpx;
+  height: 80rpx;
+  /* background-color: #ffffff; */
+  /* border: 2rpx solid #000; */
+  border-radius: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-icon {
+  width: 60%;
+  height: 60%;
+}
+
+/* 第二排：计时器 */
+.timer {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #57b46e;
+  text-align: center;
+  margin: 20rpx auto;
+  width: fit-content;
+}
+
+/* 第三排：游戏区域 */
+.content {
+  width: 750rpx;
+  height: 800rpx;
+  margin: 20rpx auto;
+  position: relative;
+  background-color: #ffffff00;
+  border-radius: 30rpx;
+  padding: 20rpx;
+  overflow: hidden;
+}
+
+.item {
+  width: 90rpx;
+  height: 90rpx;
+  background-color: #f5ffcd;
+  border: 2rpx solid #000;
+  display: flex;
+  border-radius: 25rpx;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+  position: absolute;
+  will-change: transform, left, top;
+  /* z-index: 1; */
+  transform-origin: center center;
+}
+
+.item.moving {
+  /* z-index: 100; */
+  animation: dropDown 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes dropDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20rpx);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.img {
+  width: 90%;
+  height: 90%;
+  transition: all 0.3s;
+}
+
+.zzc {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 25rpx;
+}
+
+/* 第四排：时令槽 */
+.seasonal-slot {
+  display: flex;
+  background-color: #f2f2f2;
+  border-radius: 20rpx 20rpx 20rpx 20rpx;
+  padding: 16rpx 16rpx 16rpx 16rpx;
+  position: relative;
+  margin: auto;
+  box-shadow: 0 0 0 16rpx #ffffff;
+  justify-content: center;
+  gap: 10rpx;
+  width: fit-content;
+}
+
+.seasonal-slot-grid {
+  width: 90rpx;
+  height: 90rpx;
+  border: none;
+  border-radius: 25rpx;
+  background-color: #dbdbdb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.seasonal-slot-grid:last-child {
+  margin-right: 0;
+}
+
+.seasonal-item {
+  width: 90rpx;
+  height: 90rpx;
+  background-color: #f5ffcd;
+  border: 2rpx solid #000;
+  border-radius: 25rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+  will-change: transform;
+  position: relative;
+  /* z-index: 1; */
+  transform-origin: center center;
+}
+
+.seasonal-item.moving {
+  /* z-index: 100; */
+}
+
+.seasonal-animation {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* 第五排：道具按钮 */
+.prop {
+  display: flex;
+  justify-content: center;
+  gap: 40rpx;
+  margin: 20rpx 0;
+  padding: 0 40rpx;
+}
+
+.prop .li {
+  width: 180rpx;
+  height: 120rpx;
+  background-color: #f8eccc;
+  border: 16rpx solid #ffffff;
+  border-radius: 50rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6rpx 0 rgba(0, 0, 0, 0.2);
+}
+
+.prop .li .btn-wrapper {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8rpx;
+}
+
+.prop .li text {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+}
+
+.prop-icon {
+  width: 70%;
+  height: 70%;
+}
+
+/* 弹窗样式 */
+.pop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  /* z-index: 999; */
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  color: #fff;
+  font-size: 60rpx;
+  margin-bottom: 30rpx;
+}
+
+.button {
+  width: 300rpx;
+  height: 100rpx;
+  display: flex;
+  margin: 20rpx auto;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  background-color: #048f8e;
+  color: #fff;
+  border-radius: 15rpx;
+}
+
+.pause-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  /* z-index: 998; */
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pause-text {
+  color: #fff;
+  font-size: 60rpx;
+  margin-bottom: 20rpx;
+}
+
+.pause-tip {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 32rpx;
+}
