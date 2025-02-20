@@ -42,6 +42,7 @@ import ButtonView from "./components/ButtonView.vue";
 import RankingPopup from "./components/RankingPopup.vue";
 import MySeasonalPopup from "./components/MySeasonalPopup.vue";
 import invitePopup from "./components/invitePopup.vue";
+import { uni } from "@dcloudio/uni-h5";
 
 export default {
 	components: {
@@ -90,7 +91,9 @@ export default {
 	methods: {
 
 		toGame() {
-			// Implement game start logic here
+			uni.navigateTo({
+				url: '/pages/game/game'
+			});
 		},
 		showRankingPopup() {
 			this.$refs.rankingPopup.open();

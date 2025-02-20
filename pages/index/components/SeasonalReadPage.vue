@@ -6,7 +6,7 @@
             @tap="navigateBack" />
         <view class="cf-flex-col cf-justify-start cf-items-center section_2 pos_3">
             <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper"><text class="font text">{{ readCount
-                    }}</text>
+            }}</text>
             </view>
         </view>
         <view class="cf-flex-col cf-justify-start cf-items-center section_3 pos_4">
@@ -15,7 +15,7 @@
             </view>
         </view>
         <view class="cf-flex-col cf-justify-start cf-items-center section_4 pos_5"><text class="text_3">{{ term
-                }}</text></view>
+        }}</text></view>
         <text class="font_2 pos_6">{{ content }}</text>
     </view>
 </template>
@@ -74,11 +74,11 @@ export default defineComponent({
 
 <style scoped lang="css">
 .page {
-    background-color: #ffffff;
-    background-size: 100% 100%;
+    position: absolute;
+    background-image: url("https://minio.plotmax.opencs.site/seasonal-delights/assets/images/background/game_background.jpg");
+    width: 100%;
+    height: 100vh;
     background-repeat: no-repeat;
-    width: 750rpx;
-    height: 1622.66rpx;
 }
 
 .image_2 {
@@ -94,10 +94,6 @@ export default defineComponent({
 
 .section_2 {
     padding: 12.27rpx 0 1286.21rpx;
-    background-color: #ffffffb3;
-    background-color: #ffffffb3;
-    background-color: #ffffffb3;
-    background-color: #ffffffb3;
     background-color: #ffffffb3;
     border-radius: 87.62rpx;
     width: 145.44rpx;
