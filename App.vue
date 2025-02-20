@@ -1,51 +1,22 @@
-<script setup>
-import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { useUserStore } from "/store/user";
-
-// Initialize global state
-const globalData = {
-  safeAreaTop: 0
-};
-
-// Make it accessible globally
-uni.$globalData = globalData;
-
-// Initialize stores
-const userStore = useUserStore();
-
-onLaunch(() => {
-  // 获取系统信息
-  const systemInfo = uni.getSystemInfoSync();
-  console.log(systemInfo);
-  if (systemInfo.safeAreaInsets) {
-    // 计算顶部安全区域高度
-    const safeAreaTop = systemInfo.safeAreaInsets.top;
-    console.log("safeAreaTop", safeAreaTop);
-
-    // Store in global state
-    uni.$globalData.safeAreaTop = safeAreaTop;
+<script>
+export default {
+  onLaunch: function () {
+    console.log('App Launch');
+    // Initialize safe area
+    uni.getSystemInfo({
+      success: (res) => {
+        uni.$globalData = uni.$globalData || {};
+        uni.$globalData.safeAreaTop = res.safeAreaInsets?.top || 0;
+      }
+    });
+  },
+  onShow: function () {
+    console.log('App Show');
+  },
+  onHide: function () {
+    console.log('App Hide');
   }
-
-  // 初始化用户ID
-  userStore.setUserId("1");
-});
-
-onShow(() => {
-  console.log("App Show");
-});
-
-onHide(() => {
-  console.log("App Hide");
-});
-
-// 全局分享配置
-uni.onShareAppMessage(() => {
-  return {
-    title: '消时令 - 二十四节气',
-    path: '/pages/index/index',
-    imageUrl: 'https://minio.plotmax.opencs.site/seasonal-delights/assets/images/logo/LOGO.png'
-  }
-});
+}
 </script>
 <style>
 /************************************************************

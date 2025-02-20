@@ -31,7 +31,7 @@ export default {
       if (text.length > 8) {
         return '65rpx';
       }
-      return '77.62rpx';
+      return '75rpx';
     }
   },
   async mounted() {
