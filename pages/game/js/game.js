@@ -44,12 +44,7 @@ export default {
       if (this.eliminateList.length >= 7) return "时令槽已满";
       return "游戏失败";
     },
-    gameBackgroundImageURL() {
-      return `url(${this.$baseUrl}/seasonal-delights/assets/images/background/game_background.jpg)`;
-    },
-    logoImageURL() {
-      return `${this.$baseUrl}/seasonal-delights/assets/images/logo/LOGO.png`;
-    },
+
     gameBackgroundMusicURL() {
       return `${this.$baseUrl}/seasonal-delights/assets/music/background_music.wav`;
     },

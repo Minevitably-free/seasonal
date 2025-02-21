@@ -1,7 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
 	<view class="page safe-area-inset-top" :style="pageStyle">
-		<SettingButton class="button-scale" />
 		<BestTime />
 		<view class="grid">
 			<!-- 第一行 -->
@@ -45,6 +44,14 @@ import invitePopup from "./components/invitePopup.vue";
 import { useUserStore } from '@/store/user';
 import { useGameStore } from '@/store/game';
 import { startGame } from '@/services/http';
+import {
+	getUserInfo,
+	getUserSettings,
+	getCollectedSolarTerms,
+	getShareInfo,
+	getItemInfo,
+	getBotPlayInfo
+} from '@/services/http';
 
 export default {
 	components: {
@@ -80,7 +87,7 @@ export default {
 			};
 		}
 	},
-	onLoad() {
+	async onLoad() {
 		// Check if resources are loaded
 		if (!uni.$globalData.resourcesLoaded) {
 			uni.redirectTo({
@@ -89,6 +96,9 @@ export default {
 			return;
 		}
 		this.safeAreaTop = uni.$globalData.safeAreaTop;
+
+		// 初始化游戏数据
+		await this.initGameData();
 	},
 	methods: {
 		async toGame() {
@@ -101,7 +111,7 @@ export default {
 					gameStore.setGameInfo(response.data);
 					gameStore.setBotPlay(false); // 设置为普通游戏模式
 					uni.navigateTo({
-						url: '/pages/game/game'
+						url: '/pages/game/game1'
 					});
 				} else {
 					uni.showToast({
@@ -134,6 +144,61 @@ export default {
 		closeinvitePopup() {
 			this.$refs.invitePopup.close();
 		},
+		async initGameData() {
+			const userStore = useUserStore();
+			const gameStore = useGameStore();
+
+			try {
+				// 并行请求所有数据
+				const [
+					userInfoRes,
+					settingsRes,
+					solarTermsRes,
+					shareInfoRes,
+					itemInfoRes,
+					botPlayInfoRes
+				] = await Promise.all([
+					getUserInfo(userStore.userId),
+					getUserSettings(userStore.userId),
+					getCollectedSolarTerms(userStore.userId),
+					getShareInfo(userStore.userId),
+					getItemInfo(userStore.userId),
+					getBotPlayInfo()
+				]);
+
+				// 更新Store状态
+				if (userInfoRes.status === 'success') {
+					userStore.setUserInfo(userInfoRes.data);
+				}
+
+				if (settingsRes.status === 'success') {
+					userStore.setSettings(settingsRes.data);
+				}
+
+				if (solarTermsRes.status === 'success') {
+					gameStore.setSolarTerms(solarTermsRes.data.allSolarTerms);
+				}
+
+				if (shareInfoRes.status === 'success') {
+					gameStore.setShareInfo(shareInfoRes.data);
+				}
+
+				if (itemInfoRes.status === 'success') {
+					gameStore.setItemInfo(itemInfoRes.data);
+				}
+
+				if (botPlayInfoRes.status === 'success') {
+					gameStore.setBotPlayInfo(botPlayInfoRes.data);
+				}
+
+			} catch (error) {
+				console.error('初始化游戏数据失败:', error);
+				uni.showToast({
+					title: '初始化游戏数据失败',
+					icon: 'none'
+				});
+			}
+		}
 	},
 };
 </script>

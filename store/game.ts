@@ -27,6 +27,9 @@ interface GameState {
     timeLimits: number;
   };
   botPlay: boolean;
+  shareInfo: {
+    sharedCount: number;
+  };
 }
 
 export const useGameStore = defineStore("game", () => {
@@ -47,6 +50,9 @@ export const useGameStore = defineStore("game", () => {
     timeLimits: 0,
   });
   const botPlay = ref(false);
+  const shareInfo = ref({
+    sharedCount: 0,
+  });
 
   const setSolarTerms = (terms: any[]) => {
     solarTerms.value = terms;
@@ -80,6 +86,10 @@ export const useGameStore = defineStore("game", () => {
     botPlay.value = value;
   };
 
+  const setShareInfo = (info: GameState["shareInfo"]) => {
+    shareInfo.value = info;
+  };
+
   return {
     solarTerms,
     itemInfo,
@@ -95,5 +105,7 @@ export const useGameStore = defineStore("game", () => {
     getPlayTimes,
     botPlay,
     setBotPlay,
+    shareInfo,
+    setShareInfo,
   };
 });

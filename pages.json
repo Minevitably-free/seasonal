@@ -26,6 +26,9 @@
       "path": "pages/game/game"
     },
     {
+      "path": "pages/game/game1"
+    },
+    {
       "path": "pages/game/obtain"
     },
     {
