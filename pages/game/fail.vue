@@ -1,8 +1,5 @@
 <template>
     <view class="cf-flex-col cf-justify-start cf-relative page">
-        <view class="section"></view>
-        <image class="image pos"
-            src="https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=cc6ca04c63ea4ab0ff237089460cc896.png" />
         <text class="font pos_2">今日已挑战{{ displayPlayTimes }}次</text>
         <text class="text pos_3">失败</text>
         <view class="cf-flex-col cf-justify-start cf-items-center image-wrapper pos_4">
@@ -50,26 +47,6 @@ export default {
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-.section {
-    background-image: url('https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=05c732ed80560ec032e06e3279ec366f.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    width: 750rpx;
-    height: 1622.66rpx;
-}
-
-.image {
-    border-radius: 87.62rpx;
-    width: 140.19rpx;
-    height: 40.3rpx;
-}
-
-.pos {
-    position: absolute;
-    right: 33.29rpx;
-    top: 45.56rpx;
 }
 
 .font {
