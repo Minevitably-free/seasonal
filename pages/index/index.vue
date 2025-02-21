@@ -1,30 +1,30 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
 	<view class="page safe-area-inset-top" :style="pageStyle">
-		<SettingButton />
+		<SettingButton class="button-scale"/>
 		<BestTime />
 		<view class="grid">
 			<!-- 第一行 -->
 			<view class="row">
-				<SeasonalButton class="grid-item" />
-				<RankingButton @tap="showRankingPopup" class="grid-item" />
-				<MySeasonalButton @tap="showMySeasonalPopup" class="grid-item" />
+				<SeasonalButton class="grid-item button-scale" />
+				<RankingButton @tap="showRankingPopup" class="grid-item button-scale" />
+				<MySeasonalButton @tap="showMySeasonalPopup" class="grid-item button-scale" />
 			</view>
 			<!-- 第二行 -->
 			<view class="row">
-				<inviteButton @tap="showinvitePopup" class="grid-item" />
-				<StartGameButton @tap="toGame" class="grid-item" />
-				<ChallengeSeasonalButton class="grid-item" />
+				<inviteButton @tap="showinvitePopup" class="grid-item button-scale" />
+				<StartGameButton @tap="toGame" class="grid-item button-scale" />
+				<ChallengeSeasonalButton class="grid-item button-scale" />
 			</view>
 		</view>
 		<uni-popup ref="rankingPopup" type="center">
-			<RankingPopup @close="closeRankingPopup"/>
+			<RankingPopup @close="closeRankingPopup" />
 		</uni-popup>
 		<uni-popup ref="mySeasonalPopup" type="center" :mask-click="false">
 			<MySeasonalPopup @close="closeMySeasonalPopup" />
 		</uni-popup>
 		<uni-popup ref="invitePopup" type="center">
-			<invitePopup  @close="closeinvitePopup"/>
+			<invitePopup @close="closeinvitePopup" />
 		</uni-popup>
 	</view>
 </template>
@@ -154,5 +154,13 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.button-scale {
+	transition: transform 0.3s ease;
+}
+
+.button-scale:active {
+	transform: scale(1.2);
 }
 </style>
