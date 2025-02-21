@@ -42,7 +42,6 @@ import ButtonView from "./components/ButtonView.vue";
 import RankingPopup from "./components/RankingPopup.vue";
 import MySeasonalPopup from "./components/MySeasonalPopup.vue";
 import invitePopup from "./components/invitePopup.vue";
-import { uni } from "@dcloudio/uni-h5";
 
 export default {
 	components: {

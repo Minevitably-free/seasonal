@@ -1,3 +1,32 @@
+const loadImage = (src) => {
+  return new Promise((resolve, reject) => {
+    uni.getImageInfo({
+      src: src,
+      success: (res) => {
+        resolve({
+          width: res.width,
+          height: res.height,
+          src: src,
+        });
+      },
+      fail: (err) => {
+        reject(new Error(`Failed to load image: ${src}`));
+      },
+    });
+  });
+};
+
+export const loadResources = async (resources) => {
+  try {
+    const loadPromises = resources.map((resource) => loadImage(resource.src));
+    const results = await Promise.all(loadPromises);
+    return results;
+  } catch (error) {
+    console.error("Resource loading failed:", error);
+    throw error;
+  }
+};
+
 export default class ResourceLoader {
   static resources = {
     images: {
@@ -73,15 +102,20 @@ export default class ResourceLoader {
       const isAudio = /\.(mp3|wav|ogg)$/i.test(url);
 
       if (isImage) {
-        const img = new Image();
-        img.onload = () => resolve(url);
-        img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
-        img.src = url;
+        loadImage(url)
+          .then(() => resolve(url))
+          .catch((err) => reject(err));
       } else if (isAudio) {
-        const audio = new Audio();
-        audio.onloadeddata = () => resolve(url);
-        audio.onerror = () => reject(new Error(`Failed to load audio: ${url}`));
-        audio.src = url;
+        const audioContext = uni.createInnerAudioContext();
+        audioContext.src = url;
+        audioContext.onCanplay(() => {
+          audioContext.destroy();
+          resolve(url);
+        });
+        audioContext.onError((err) => {
+          audioContext.destroy();
+          reject(new Error(`Failed to load audio: ${url}`));
+        });
       } else {
         fetch(url)
           .then((response) =>
