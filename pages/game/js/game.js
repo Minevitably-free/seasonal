@@ -1,3 +1,11 @@
+import { useUserStore } from "@/store/user";
+import { useGameStore } from "@/store/game";
+import {
+  createGameRecord,
+  updateBotPlayResult,
+  getPlayTimes,
+} from "@/services/http";
+
 export default {
   data() {
     return {
@@ -383,6 +391,85 @@ export default {
       this.innerAudioContext2.play();
     },
 
+    async handleGameCompletion() {
+      const gameStore = useGameStore();
+      const userStore = useUserStore();
+
+      if (gameStore.botPlay) {
+        // Handle bot play victory
+        const response = await updateBotPlayResult(true);
+        if (response.status === "success") {
+          uni.redirectTo({
+            url: "/pages/game/success?duration=" + (600 - this.timeLeft),
+          });
+        }
+        return;
+      }
+
+      // Handle normal game victory
+      let recordCreated = false;
+      let retryCount = 0;
+      const maxRetries = 3;
+
+      while (!recordCreated && retryCount < maxRetries) {
+        try {
+          const response = await createGameRecord(
+            userStore.userId,
+            600 - this.timeLeft,
+            gameStore.gameInfo.theme
+          );
+
+          if (response.status === "success") {
+            const playTimesResponse = await getPlayTimes(userStore.userId);
+            if (playTimesResponse.status === "success") {
+              uni.redirectTo({
+                url: `/pages/game/obtain?term=${
+                  response.data.term
+                }&image=${encodeURIComponent(response.data.image)}`,
+              });
+              recordCreated = true;
+            }
+          }
+        } catch (error) {
+          retryCount++;
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retry
+        }
+      }
+
+      if (!recordCreated) {
+        uni.showToast({
+          title: "创建游戏记录失败",
+          icon: "none",
+          duration: 2000,
+        });
+        setTimeout(() => {
+          uni.redirectTo({
+            url: "/pages/index/index",
+          });
+        }, 2000);
+      }
+    },
+
+    async handleGameFailure() {
+      const gameStore = useGameStore();
+      const userStore = useUserStore();
+
+      if (gameStore.botPlay) {
+        // Handle bot play failure
+        const response = await updateBotPlayResult(false);
+        if (response.status === "success") {
+          uni.redirectTo({
+            url: "/pages/game/fail",
+          });
+        }
+      } else {
+        // Handle normal game failure
+        uni.redirectTo({
+          url: "/pages/game/fail",
+        });
+      }
+    },
+
     gameOver(item) {
       // 时令槽满了
       if (
@@ -395,6 +482,7 @@ export default {
         this.show = true;
         this.canRevive = true;
         this.loseSound?.play();
+        this.handleGameFailure();
         return;
       }
       // 时间到了
@@ -403,6 +491,7 @@ export default {
         this.show = true;
         this.canRevive = false;
         this.loseSound?.play();
+        this.handleGameFailure();
         return;
       }
       // 游戏胜利
@@ -412,6 +501,7 @@ export default {
         this.canRevive = false;
         this.victorySound?.play();
         this.stopTimer();
+        this.handleGameCompletion();
       }
     },
 

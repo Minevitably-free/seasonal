@@ -3,23 +3,32 @@
         <image class="image-back"
             src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/e11edf570e79834f348a31a56da4999a.png"
             @tap="navigateBack" />
-        <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper pos_2"><text class="font">挑战春</text>
+        <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper pos_2"
+            @tap="startSeasonalGame('spring')">
+            <text class="font">挑战春</text>
         </view>
         <view class="cf-flex-col section_2 pos_3">
-            <view class="cf-flex-col cf-justify-start cf-items-center cf-relative text-wrapper">
+            <view class="cf-flex-col cf-justify-start cf-items-center cf-relative text-wrapper"
+                @tap="startSeasonalGame('summer')">
                 <text class="font">挑战夏</text>
             </view>
-            <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper mt-109">
+            <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper mt-109"
+                @tap="startSeasonalGame('autumn')">
                 <text class="font">挑战秋</text>
             </view>
         </view>
-        <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper_2 pos_4">
+        <view class="cf-flex-col cf-justify-start cf-items-center text-wrapper_2 pos_4"
+            @tap="startSeasonalGame('winter')">
             <text class="font text">挑战冬</text>
         </view>
     </view>
 </template>
 
 <script>
+import { useUserStore } from '@/store/user';
+import { useGameStore } from '@/store/game';
+import { startGame } from '@/services/http';
+
 export default {
     components: {},
     props: {},
@@ -38,6 +47,31 @@ export default {
     methods: {
         navigateBack() {
             uni.navigateBack();
+        },
+        async startSeasonalGame(theme) {
+            const userStore = useUserStore();
+            const gameStore = useGameStore();
+
+            try {
+                const response = await startGame(userStore.userId, true, theme);
+                if (response.status === 'success') {
+                    gameStore.setGameInfo(response.data);
+                    gameStore.setBotPlay(true); // 设置为人机对战模式
+                    uni.navigateTo({
+                        url: '/pages/game/game'
+                    });
+                } else {
+                    uni.showToast({
+                        title: '无法挑战',
+                        icon: 'none'
+                    });
+                }
+            } catch (error) {
+                uni.showToast({
+                    title: error?.message || '开始游戏失败',
+                    icon: 'none'
+                });
+            }
         }
     },
     onLoad() {

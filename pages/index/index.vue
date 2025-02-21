@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
 	<view class="page safe-area-inset-top" :style="pageStyle">
-		<SettingButton class="button-scale"/>
+		<SettingButton class="button-scale" />
 		<BestTime />
 		<view class="grid">
 			<!-- 第一行 -->
@@ -42,6 +42,9 @@ import ButtonView from "./components/ButtonView.vue";
 import RankingPopup from "./components/RankingPopup.vue";
 import MySeasonalPopup from "./components/MySeasonalPopup.vue";
 import invitePopup from "./components/invitePopup.vue";
+import { useUserStore } from '@/store/user';
+import { useGameStore } from '@/store/game';
+import { startGame } from '@/services/http';
 
 export default {
 	components: {
@@ -88,11 +91,30 @@ export default {
 		this.safeAreaTop = uni.$globalData.safeAreaTop;
 	},
 	methods: {
+		async toGame() {
+			const userStore = useUserStore();
+			const gameStore = useGameStore();
 
-		toGame() {
-			uni.navigateTo({
-				url: '/pages/game/game'
-			});
+			try {
+				const response = await startGame(userStore.userId, false, '');
+				if (response.status === 'success') {
+					gameStore.setGameInfo(response.data);
+					gameStore.setBotPlay(false); // 设置为普通游戏模式
+					uni.navigateTo({
+						url: '/pages/game/game'
+					});
+				} else {
+					uni.showToast({
+						title: '挑战次数不足',
+						icon: 'none'
+					});
+				}
+			} catch (error) {
+				uni.showToast({
+					title: error?.message || '开始游戏失败',
+					icon: 'none'
+				});
+			}
 		},
 		showRankingPopup() {
 			this.$refs.rankingPopup.open();

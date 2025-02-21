@@ -3,24 +3,47 @@
         <view class="section"></view>
         <image class="image pos"
             src="https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=cc6ca04c63ea4ab0ff237089460cc896.png" />
-        <text class="font pos_2">今日已挑战3次</text>
+        <text class="font pos_2">今日已挑战{{ playTimes }}次</text>
         <text class="text pos_3">恭喜挑战成功</text>
         <image class="image_2 pos_4"
             src="https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=196c76cc616288300527a914d6bca5ed.png" />
-        <text class="text_2 pos_5">用时04:36</text>
-        <text class="font text_3 pos_6">点击继续</text>
+        <text class="text_2 pos_5">用时{{ formatTime(duration) }}</text>
+        <text class="font text_3 pos_6" @tap="toIndex">点击继续</text>
     </view>
 </template>
 
 <script>
+import { useGameStore } from '@/store/game';
+
 export default {
     components: {},
     props: {},
     data() {
-        return {};
+        return {
+            duration: 0
+        };
     },
-
-    methods: {},
+    computed: {
+        playTimes() {
+            const gameStore = useGameStore();
+            return gameStore.botPlayInfo.winTimes + gameStore.botPlayInfo.loseTimes;
+        }
+    },
+    onLoad(options) {
+        this.duration = Number(options.duration || 0);
+    },
+    methods: {
+        formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        },
+        toIndex() {
+            uni.redirectTo({
+                url: '/pages/index/index'
+            });
+        }
+    },
 };
 </script>
 

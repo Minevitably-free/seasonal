@@ -1,5 +1,13 @@
+import { get } from "http";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+
+interface ThemeSolarTerm {
+  id: number;
+  term: string;
+  image: string;
+  hasCollect: boolean;
+}
 
 interface GameState {
   solarTerms: any[];
@@ -12,6 +20,13 @@ interface GameState {
     winTimes: number;
     loseTimes: number;
   };
+  gameInfo: {
+    themeImage: string;
+    theme: string;
+    themeSolarTerms: ThemeSolarTerm[];
+    timeLimits: number;
+  };
+  botPlay: boolean;
 }
 
 export const useGameStore = defineStore("game", () => {
@@ -25,6 +40,13 @@ export const useGameStore = defineStore("game", () => {
     winTimes: 0,
     loseTimes: 0,
   });
+  const gameInfo = ref<GameState["gameInfo"]>({
+    themeImage: "",
+    theme: "",
+    themeSolarTerms: [],
+    timeLimits: 0,
+  });
+  const botPlay = ref(false);
 
   const setSolarTerms = (terms: any[]) => {
     solarTerms.value = terms;
@@ -38,8 +60,24 @@ export const useGameStore = defineStore("game", () => {
     playTimes.value = times;
   };
 
+  const getPlayTimes = () => {
+    return playTimes.value;
+  };
+
   const setBotPlayInfo = (info: GameState["botPlayInfo"]) => {
     botPlayInfo.value = info;
+  };
+
+  const setGameInfo = (info: GameState["gameInfo"]) => {
+    gameInfo.value = info;
+  };
+
+  const getThemeSolarTerms = () => {
+    return gameInfo.value.themeSolarTerms;
+  };
+
+  const setBotPlay = (value: boolean) => {
+    botPlay.value = value;
   };
 
   return {
@@ -51,5 +89,11 @@ export const useGameStore = defineStore("game", () => {
     setItemInfo,
     setPlayTimes,
     setBotPlayInfo,
+    gameInfo,
+    setGameInfo,
+    getThemeSolarTerms,
+    getPlayTimes,
+    botPlay,
+    setBotPlay,
   };
 });

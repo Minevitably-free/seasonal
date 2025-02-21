@@ -253,7 +253,11 @@ export const getCollectedSolarTerms = async (userId: string) => {
 };
 
 // Game Operation APIs
-export const startGame = (userId: string, botPlay: boolean, theme?: string) => {
+export const startGame = (
+  userId: string,
+  botPlay: boolean,
+  theme: string = ""
+) => {
   return service.post("/api/game/play", { userId, botPlay, theme });
 };
 

@@ -3,25 +3,40 @@
         <view class="section"></view>
         <image class="image pos"
             src="https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=cc6ca04c63ea4ab0ff237089460cc896.png" />
-        <text class="font pos_2">今日已挑战3次</text>
+        <text class="font pos_2">今日已挑战{{ displayPlayTimes }}次</text>
         <text class="text pos_3">失败</text>
         <view class="cf-flex-col cf-justify-start cf-items-center image-wrapper pos_4">
             <image class="image_2"
                 src="https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=61b9cf467b4f5cd23c050189d89b6610.png" />
         </view>
-        <text class="font text_2 pos_5">点击继续</text>
+        <text class="font text_2 pos_5" @tap="toIndex">点击继续</text>
     </view>
 </template>
 
 <script>
+import { useGameStore } from '@/store/game';
+
 export default {
     components: {},
     props: {},
     data() {
         return {};
     },
-
-    methods: {},
+    computed: {
+        displayPlayTimes() {
+            const gameStore = useGameStore();
+            return gameStore.botPlay
+                ? gameStore.botPlayInfo.winTimes + gameStore.botPlayInfo.loseTimes
+                : gameStore.playTimes;
+        }
+    },
+    methods: {
+        toIndex() {
+            uni.redirectTo({
+                url: '/pages/index/index'
+            });
+        }
+    }
 };
 </script>
 

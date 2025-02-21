@@ -3,26 +3,46 @@
         <view class="section"></view>
         <image class="image pos"
             src="https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=cc6ca04c63ea4ab0ff237089460cc896.png" />
-        <text class="font pos_2">今日已挑战3次</text>
+        <text class="font pos_2">今日已挑战{{ playTimes }}次</text>
         <text class="text pos_3">恭喜获得时令</text>
         <view class="cf-flex-col cf-items-center section_2 pos_4">
-            <image class="image_2"
-                src="https://ide.code.fun/api/image?token=67b77de14ae84d001226a9eb&name=44597f61ff81f3f4350b10c6948d102a.png" />
-            <text class="cf-mt-34 text_2">立春</text>
+            <image class="image_2" :src="image" />
+            <text class="cf-mt-34 text_2">{{ term }}</text>
         </view>
-        <text class="font text_3 pos_5">点击继续</text>
+        <text class="font text_3 pos_5" @tap="toIndex">点击继续</text>
     </view>
 </template>
 
 <script>
+import { getPlayTimes } from '@/services/http';
+import { useUserStore } from '@/store/user';
+
 export default {
     components: {},
     props: {},
     data() {
-        return {};
+        return {
+            playTimes: 0,
+            term: '',
+            image: ''
+        };
     },
-
-    methods: {},
+    async onLoad(options) {
+        const userStore = useUserStore();
+        const response = await getPlayTimes(userStore.userId);
+        if (response.status === 'success') {
+            this.playTimes = response.data.todayPlayTimes;
+        }
+        this.term = options.term || '';
+        this.image = decodeURIComponent(options.image || '');
+    },
+    methods: {
+        toIndex() {
+            uni.redirectTo({
+                url: '/pages/index/index'
+            });
+        }
+    }
 };
 </script>
 
