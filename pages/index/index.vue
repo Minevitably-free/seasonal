@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
 	<view class="page safe-area-inset-top" :style="pageStyle">
+		<SettingButton class="button-scale" />
 		<BestTime />
 		<view class="grid">
 			<!-- 第一行 -->
