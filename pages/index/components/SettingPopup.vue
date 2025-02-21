@@ -24,7 +24,7 @@
       </view>
       <view class="cf-flex-col group_3">
         <view class="cf-flex-row cf-justify-between">
-          <view class="cf-flex-row cf-items-start cf-self-start" @tap="toggleSoundEffects">
+          <view class="cf-flex-row cf-items-start cf-self-start" @tap="toggleSetting('soundEffects')">
             <image v-if="soundEffectsEnabled" class="image_8"
               src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/c2e9becca51d4bbf883dd00c104ae90b.png" />
             <text class="font_2 text_7 ml-21">音效</text>
@@ -33,7 +33,7 @@
             src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/5d32c7e87dd7b6e7618677ff551212c5.png" />
         </view>
         <view class="cf-flex-row cf-justify-between group_4">
-          <view class="cf-flex-row cf-items-end cf-self-start">
+          <view class="cf-flex-row cf-items-end cf-self-start" @tap="toggleSetting('music')">
             <image class="image_11"
               src="https://minio.plotmax.opencs.site/seasonal-delights/assets/images/temp/9734ebce1c33a7dfaa40cd5c6ef95d77.png" />
             <text class="font_2 ml-21">音乐</text>
@@ -58,29 +58,45 @@
 </template>
 
 <script>
-import { getUserInfo, getUserSettings, getPost, updateUserSettings } from "@/services/http";
+import { getUserInfo, getPost } from "@/services/http";
+import { getUserSettings, updateUserSettings } from '@/services/http';
+import { useUserStore } from '@/store/user';
 
 export default {
-  components: {},
-  props: {},
   data() {
+    const userStore = useUserStore();
     return {
       nickname: "",
       avatarUrl: "",
       gender: "",
       age: 0,
       region: "",
-      musicEnabled: false,
-      soundEffectsEnabled: false,
+      musicEnabled: userStore.settings.musicEnabled,
+      soundEffectsEnabled: userStore.settings.soundEffectsEnabled,
       post: ""
     };
+  },
+  async created() {
+    const userStore = useUserStore();
+    // 只有在没有用户数据时才请求后端
+    if (!userStore.hasUserData()) {
+      try {
+        const response = await getUserSettings();
+        if (response.status === 'success') {
+          userStore.setSettings(response.data);
+          this.musicEnabled = response.data.musicEnabled;
+          this.soundEffectsEnabled = response.data.soundEffectsEnabled;
+        }
+      } catch (error) {
+        console.error('获取设置失败:', error);
+      }
+    }
   },
   methods: {
     async fetchData() {
       try {
         const userId = "1";
         const userInfoResponse = await getUserInfo(userId);
-        const userSettingsResponse = await getUserSettings(userId);
         const postResponse = await getPost();
 
         if (userInfoResponse.status === "success") {
@@ -92,12 +108,6 @@ export default {
           this.region = region;
         }
 
-        if (userSettingsResponse.status === "success") {
-          const { musicEnabled, soundEffectsEnabled } = userSettingsResponse.data;
-          this.musicEnabled = musicEnabled;
-          this.soundEffectsEnabled = soundEffectsEnabled;
-        }
-
         if (postResponse.status === "success") {
           this.post = postResponse.data.post;
         }
@@ -105,17 +115,33 @@ export default {
         console.error("Error fetching data:", error);
       }
     },
-    async toggleSoundEffects() {
-      try {
-        const userId = "1";
-        const newSoundEffectsEnabled = !this.soundEffectsEnabled;
-        const response = await updateUserSettings(userId, this.musicEnabled, newSoundEffectsEnabled);
+    async toggleSetting(type) {
+      const userStore = useUserStore();
+      if (type === 'music') {
+        this.musicEnabled = !this.musicEnabled;
+      } else {
+        this.soundEffectsEnabled = !this.soundEffectsEnabled;
+      }
 
-        if (response.status === "success") {
-          this.soundEffectsEnabled = newSoundEffectsEnabled;
+      try {
+        const response = await updateUserSettings(
+          this.musicEnabled,
+          this.soundEffectsEnabled
+        );
+        if (response.status === 'success') {
+          userStore.setSettings({
+            musicEnabled: this.musicEnabled,
+            soundEffectsEnabled: this.soundEffectsEnabled
+          });
         }
       } catch (error) {
-        console.error("Error updating sound effects:", error);
+        console.error('更新设置失败:', error);
+        // 更新失败时恢复原值
+        if (type === 'music') {
+          this.musicEnabled = !this.musicEnabled;
+        } else {
+          this.soundEffectsEnabled = !this.soundEffectsEnabled;
+        }
       }
     }
   },
