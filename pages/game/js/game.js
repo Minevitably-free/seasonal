@@ -32,6 +32,9 @@ export default {
       timeLeft: 600, // 10分钟 = 600秒
       timer: null,
       canRevive: false, // 是否可以复活
+      showRevivePopup: false,
+      showQuizPopup: false,
+      currentQuestion: 1,
     };
   },
   computed: {
@@ -482,7 +485,7 @@ export default {
         this.show = true;
         this.canRevive = true;
         this.loseSound?.play();
-        this.handleGameFailure();
+        this.showRevivePopup = true;
         return;
       }
       // 时间到了
@@ -503,6 +506,35 @@ export default {
         this.stopTimer();
         this.handleGameCompletion();
       }
+    },
+
+    handleAbandon() {
+      this.showRevivePopup = false;
+      this.handleGameFailure();
+    },
+
+    startQuiz() {
+      this.showRevivePopup = false;
+      this.showQuizPopup = true;
+      this.currentQuestion = 1;
+    },
+
+    async handleQuizAnswer(correct) {
+      if (!correct) {
+        this.showQuizPopup = false;
+        this.handleGameFailure();
+        return;
+      }
+
+      if (this.currentQuestion === 3) {
+        // All questions answered correctly
+        this.showQuizPopup = false;
+        this.revive();
+        return;
+      }
+
+      // Move to next question
+      this.currentQuestion++;
     },
 
     changeSeason() {

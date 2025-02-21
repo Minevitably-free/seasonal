@@ -1,33 +1,54 @@
 <template>
     <view class="cf-flex-col section_2 pos_8">
-        <text class="cf-self-center text_2">题目1/3</text>
-        <text class="cf-self-center font text_3">二十四节气的来历？</text>
+        <text class="cf-self-center text_2">题目{{ currentQuestion }}/3</text>
+        <text class="cf-self-center font text_3">{{ question }}</text>
         <view class="cf-flex-col cf-self-stretch group_1">
-            <view class="cf-flex-col cf-justify-start cf-items-start text-wrapper_1">
-                <text class="font_2 text_4">A：农耕文明的产物</text>
-            </view>
-            <view class="cf-flex-col cf-justify-start cf-items-start text-wrapper_1 cf-mt-4">
-                <text class="font_2 text_5">B：封建文明的产物</text>
-            </view>
-            <view class="cf-flex-col cf-justify-start cf-items-start text-wrapper cf-mt-4">
-                <text class="font_2 text_6">C：随便编的</text>
-            </view>
-            <view class="cf-flex-col cf-justify-start cf-items-start text-wrapper_1 cf-mt-4">
-                <text class="font_2 text_7">D：新时代文明的产物</text>
+            <view v-for="(option, index) in options" :key="index"
+                class="cf-flex-col cf-justify-start cf-items-start text-wrapper_1" :class="{ 'cf-mt-4': index > 0 }"
+                @tap="selectOption(index)">
+                <text class="font_2 text_4">{{ String.fromCharCode(65 + index) }}：{{ option }}</text>
             </view>
         </view>
     </view>
 </template>
 
 <script>
-export default {
-    components: {},
-    props: {},
-    data() {
-        return {};
-    },
+import { getRebornQuestion } from '@/services/http';
 
-    methods: {},
+export default {
+    props: {
+        currentQuestion: {
+            type: Number,
+            default: 1
+        }
+    },
+    data() {
+        return {
+            question: '',
+            options: [],
+            correctOption: null
+        };
+    },
+    async mounted() {
+        await this.fetchQuestion();
+    },
+    methods: {
+        async fetchQuestion() {
+            const response = await getRebornQuestion();
+            if (response.status === 'success') {
+                this.question = response.data.question;
+                this.options = response.data.options;
+                this.correctOption = response.data.correctOption;
+            }
+        },
+        selectOption(index) {
+            if (index === this.correctOption) {
+                this.$emit('correct');
+            } else {
+                this.$emit('wrong');
+            }
+        }
+    }
 };
 </script>
 

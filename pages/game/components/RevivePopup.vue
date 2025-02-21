@@ -42,21 +42,30 @@
             </view>
         </view>
         <view class="cf-flex-col cf-justify-start cf-self-center mt-17"><text class="font">复活并移出所有物品</text></view>
-        <view class="cf-flex-col cf-justify-start cf-items-center cf-self-center text-wrapper_2">
+        <view class="cf-flex-col cf-justify-start cf-items-center cf-self-center text-wrapper_2" @tap="startQuiz">
             <text class="text_4">答题复活</text>
         </view>
+        <text class="abandon-text" @tap="abandon">放弃</text>
     </view>
 </template>
 
 <script>
 export default {
+    emits: ['start-quiz', 'abandon'],
     components: {},
     props: {},
     data() {
         return {};
     },
 
-    methods: {},
+    methods: {
+        startQuiz() {
+            this.$emit('start-quiz');
+        },
+        abandon() {
+            this.$emit('abandon');
+        }
+    }
 };
 </script>
 
@@ -222,5 +231,12 @@ export default {
     font-size: 52.57rpx;
     font-family: Segoe UI;
     line-height: 48.57rpx;
+}
+
+.abandon-text {
+    margin-top: 20rpx;
+    color: #0e0e0e;
+    font-size: 35.05rpx;
+    text-align: center;
 }
 </style>

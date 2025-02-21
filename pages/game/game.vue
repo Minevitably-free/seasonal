@@ -62,13 +62,18 @@
     </view>
 
     <!-- 弹窗 -->
-    <view class="pop" v-if="show">
+    <view class="pop" v-if="show && !showRevivePopup && !showQuizPopup">
       <view class="title">{{ getGameOverText }}</view>
-      <view class="button" v-if="canRevive" @tap="revive">复活</view>
-      <view class="button" v-if="canRevive" @tap="toIndex">放弃</view>
       <view class="button" v-if="!canRevive" @tap="init()">重新挑战</view>
       <view class="button" v-if="!canRevive" @tap="toIndex">回到首页</view>
     </view>
+
+    <!-- 复活弹窗 -->
+    <RevivePopup v-if="showRevivePopup" @start-quiz="startQuiz" @abandon="handleAbandon" />
+
+    <!-- 答题弹窗 -->
+    <Question v-if="showQuizPopup" :currentQuestion="currentQuestion" @correct="handleQuizAnswer(true)"
+      @wrong="handleQuizAnswer(false)" />
 
     <!-- 暂停遮罩 -->
     <view class="pause-mask" v-if="isPaused" @tap="togglePause">
@@ -80,7 +85,14 @@
 
 <script>
 import game from "./js/game.js";
+import RevivePopup from './components/RevivePopup.vue';
+import Question from './components/Question.vue';
+
 export default {
+  components: {
+    RevivePopup,
+    Question
+  },
   ...game,
   data() {
     return {
@@ -107,4 +119,17 @@ export default {
 
 <style scoped>
 @import url("./styles/game.css");
+
+/* Add these styles for the popups */
+.pop,
+.section_2,
+.pos_8 {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+/* Add any additional styles needed for popup positioning */
 </style>
