@@ -187,7 +187,7 @@ export default {
     position: absolute;
     left: 36.8rpx;
     right: 33.29rpx;
-    top: 1273.95rpx;
+    bottom: 270rpx;
 }
 
 .section_5 {
@@ -209,7 +209,7 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    top: 1447.43rpx;
+    bottom: 100rpx;
 }
 
 .group_7 {
