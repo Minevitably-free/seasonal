@@ -11,6 +11,11 @@
             </view>
         </view>
         <text class="timer text">10:00</text>
+        <view class="game-grid">
+            <view class="grid-row" v-for="row in 14" :key="row">
+                <view class="grid-cell" v-for="col in 14" :key="col"></view>
+            </view>
+        </view>
         <view class="seasonal-slot cf-flex-col cf-justify-start section_4 pos_19">
             <view class="seasonal-slot-grid cf-flex-row cf-justify-evenly cf-relative section_5">
                 <view class="section_1" v-for="(item, index) in 7" :key="index"></view>
@@ -176,6 +181,26 @@ export default {
     transform: translateX(-50%);
 }
 
+.game-grid {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 560rpx;
+    height: 560rpx;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-row {
+    flex: 1;
+    display: flex;
+}
+
+.grid-cell {
+    flex: 1;
+}
 
 .section_4 {
     padding: 14.02rpx 0 12.27rpx;
@@ -281,8 +306,6 @@ export default {
     height: 140.19rpx;
     border: solid 17.52rpx #ffffff;
 }
-
-
 
 .image_18 {
     margin-left: 2.45rpx;
