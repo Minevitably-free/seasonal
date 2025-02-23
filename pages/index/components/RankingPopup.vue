@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSeasonalRankStore } from '/store/seasonalRank';
+import { useSeasonalRankStore } from '@/store/seasonalRank';
 
 const seasonTranslations: { [key: string]: string } = {
   spring: '春',
